@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import { Button, TextField } from "@mui/material";
-import { DesktopDatePicker , LocalizationProvider} from '@mui/x-date-pickers';
+import { DesktopDatePicker, LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import Axios from "axios";
+const axios = require("axios");
+
 
 class AddTodo extends Component {
   constructor() {
@@ -23,7 +24,7 @@ class AddTodo extends Component {
 
   handleDateChange = (event) => {
     let date = null;
-    if(event != null){
+    if (event != null) {
       date = new Date(event).toLocaleDateString();
     }
     this.setState({
@@ -34,32 +35,19 @@ class AddTodo extends Component {
   handleSubmit = (event) => {
     event.preventDefault();
     if (this.state.content.trim()) {
-      // JSON object to be sent as body of request
-      const jsonObject = {
-        task: this.state.content,
-        currentDate: this.state.date,
-        dueDate: this.state.duedate
-      };
-
-      // HTTP Client to send a POST request
-      Axios({
-        method: "POST",
-        url: "http://localhost:8080/add/item",
-        data: {jsonObject},
-        headers: {
-          "Content-Type": "application/json"
-        }
-      }).then(res => {
-        console.log(res.data.message);
-      }).catch(err => {
-        console.error("There was an error making the request!", err);
-      });
-
-      this.props.addTodo(this.state);
-      this.setState({
-        content: "",
-        date: "",
-        duedate: null
+      axios.post('/api/todos', {
+        content: this.state.content,
+        date: this.state.date,
+        duedate: this.state.duedate
+      }).then(response => {
+        this.props.addTodo(this.state);
+        this.setState({
+          content: "",
+          date: "",
+          duedate: null
+        });
+      }).catch(error => {
+        console.error("There was an error adding the todo!", error);
       });
     }
   };
@@ -73,13 +61,13 @@ class AddTodo extends Component {
           onChange={this.handleChange}
           value={this.state.content}
         />
-        <LocalizationProvider dateAdapter={AdapterDateFns}>         
+        <LocalizationProvider dateAdapter={AdapterDateFns}>
           <DesktopDatePicker
-              id="new-item-date"
-              label="Due Date"
-              value={this.state.duedate}
-              onChange={this.handleDateChange}
-              renderInput={(params) => <TextField {...params} />}
+            id="new-item-date"
+            label="Due Date"
+            value={this.state.duedate}
+            onChange={this.handleDateChange}
+            renderInput={(params) => <TextField {...params} />}
           />
         </LocalizationProvider>
         <Button

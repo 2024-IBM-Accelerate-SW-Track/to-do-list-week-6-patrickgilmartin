@@ -1,6 +1,9 @@
 import React, { useState } from "react";
 import { Button, TextField } from "@mui/material";
-import Axios from "axios";
+const axios = require("axios");
+
+
+
 
 const SearchTodo = () => {
   const [query, setQuery] = useState("");
@@ -13,7 +16,7 @@ const SearchTodo = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const response = await Axios.get(`http://localhost:8080/get/searchitem?q=${query}`);
+      const response = await axios.get(`http://localhost:8080/get/searchitem?q=${query}`);
       setResults(response.data);
     } catch (error) {
       console.error("Error searching items", error);

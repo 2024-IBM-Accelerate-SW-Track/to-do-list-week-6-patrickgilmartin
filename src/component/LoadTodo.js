@@ -2,7 +2,10 @@ import React, { Component } from "react";
 import { Button, TextField } from "@mui/material";
 import { DesktopDatePicker , LocalizationProvider } from '@mui/x-date-pickers';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
-import Axios from "axios";
+const axios = require("axios");
+
+
+
 
 class AddTodo extends Component {
   state = {
@@ -33,7 +36,7 @@ class AddTodo extends Component {
       dueDate: this.state.due
     };
   
-    Axios({
+    axios({
       method: "POST",
       url: "http://localhost:8080/add/item",
       data: { jsonObject },

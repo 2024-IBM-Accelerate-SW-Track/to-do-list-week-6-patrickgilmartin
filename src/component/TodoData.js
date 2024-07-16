@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
-import Axios from "axios";
+const axios = require("axios");
+
+
+
 
 const ShowTodos = () => {
   const [todos, setTodos] = useState([]);
 
   const fetchData = async () => {
     try {
-      const response = await Axios.get("http://localhost:8080/get/items");
+      const response = await axios.get("http://localhost:8080/get/items");
       setTodos(response.data);
     } catch (error) {
       console.error("Error fetching data", error);

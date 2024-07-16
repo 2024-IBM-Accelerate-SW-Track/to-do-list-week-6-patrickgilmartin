@@ -2,7 +2,8 @@ import React, { Component } from "react";
 import Todos from "../component/todos";
 import AddTodo from "../component/AddTodo";
 import "../pages/Home.css";
-import Axios from "axios";
+const axios = require("axios");
+
 
 class Home extends Component {
   constructor() {
@@ -33,7 +34,7 @@ class Home extends Component {
       dueDate: todo.duedate
     };
 
-    Axios({
+    axios({
       method: "POST",
       url: "http://localhost:8080/add/item",
       data: { jsonObject },
